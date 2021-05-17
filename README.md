@@ -1,5 +1,5 @@
 # PyStegosploit - Exploit Delivery via Steganography and Polyglots
-by Charmve - yidazhang1 [at] gmail[dot]com, [@Charmve](https://github.com/Charmve)  [@therealsaumil](https://twitter.com/therealsaumil) [@therealsaumil](https://twitter.com/therealsaumil) [@amichael](https://github.com/amichael7)
+by Charmve - yidazhang1 [at] gmail[dot]com, [@Charmve](https://github.com/Charmve)  [@therealsaumil](https://twitter.com/therealsaumil)  [@amichael](https://github.com/amichael7)
 
 May 2021
 
