@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+                                     .       .
+                                 / `.   .' \
+                         .---.  <    > <    >  .---.
+                         |    \  \ - ~ ~ - /  /    |
+                          ~-..-~             ~-..-~
+                      \~~~\.'   stegosploit      `./~~~/
+                       \__/                        \__/
+                         /  .    -.                  \
+                  \~~~\/   {       \       .-~ ~-.    -._ _._
+                   \__/    :        }     {       \     ~{  p'-._
+    .     .   |~~. .'       \       }      \       )      \  ~--'}
+    \\   //   `-..'       _ -\      |      _\      )__.-~~'='''''
+ `-._\\_//__..-'      .-~    |\.    }~~--~~  \=   / \
+  ``~---.._ _ _ . - ~        ) /=  /         /+  /   }
+                            /_/   /         {   } |  |
+                              `~---o.       `~___o.---'
+
+Image Decoder
+Test whether an encoded image gets decoded correctly
+
+
+-->
+<html>
+<head>
+<script src="md5.js"></script>
+<script src="imagedecode.js"></script>
+</head>
+<body>
+   <h1>Decode a Steganographic message from an Image</h1>
+   <img id="imgsrc">
+
+   <script>
+   imageFile = prompt("Source JPG/PNG file");
+   bitLayer = parseInt(prompt("Encoding bit layer: 0 = LSB", "2"));
+   encodingChannel = parseInt(prompt("Encoding Channel: 0=R,1=G,2=B,3=All", "3"));
+   grid = parseInt(prompt("Grid: ", "4"));
+
+   if(bitLayer < 0) {
+      bitLayer = 0;
+   }
+   if(bitLayer > 7) {
+      bitLayer = 7;
+   }
+   if(isNaN(grid)) {
+      grid = 1;
+   }
+   
+   imgsrc.src = imageFile + "?" + Math.random().toString();
+   </script>
+
+   <br/>
+   <input type=button id="decodebutton" value="decode" onclick="decodeImageData()">
+   <br/>
+   <textarea id="output" rows=10 cols=80 readonly=true></textarea>
+   <br />
+   MD5: <input type="text" id="md5sum" size=80 readonly=true>
+   <br />
+</body>
+</html>
+

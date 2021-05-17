@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!--
+                                  .       .
+                                 / `.   .' \
+                         .---.  <    > <    >  .---.
+                         |    \  \ - ~ ~ - /  /    |
+                          ~-..-~             ~-..-~
+                      \~~~\.'   stegosploit      `./~~~/
+                       \__/                        \__/
+                         /  .    -.                  \
+                  \~~~\/   {       \       .-~ ~-.    -._ _._
+                   \__/    :        }     {       \     ~{  p'-._
+    .     .   |~~. .'       \       }      \       )      \  ~--'}
+    \\   //   `-..'       _ -\      |      _\      )__.-~~'='''''
+ `-._\\_//__..-'      .-~    |\.    }~~--~~  \=   / \
+  ``~---.._ _ _ . - ~        ) /=  /         /+  /   }
+                            /_/   /         {   } |  |
+                              `~---o.       `~___o.---'
+
+Image Layer Analysis utility.
+Separate an image into individual bit layers, and filter out specific
+R, G or B colour channels.
+
+by Saumil Shah @therealsaumil
+-->
+<html>
+<head>
+<script src="histogram.js"></script>
+<script>
+   var logData = new Array;
+   var imageHeight = 0;
+   var imageWidth = 0;
+   var img;
+   var canvasTarget;
+   var canvasDelta;
+   var contextTarget;
+   var contextDelta;
+   var targetPix;
+   var histogram1;
+   var encodingChannel = 3;
+   var fileType;
+   var bitlayers;
+   var bits;
+   var bitmask;
+   var equalize;
+   var mask = 0;
+   var alpha = 255;
+   var log;
+
+   function clog(x) {
+      logData.splice(0, 0, x);
+      writeLog();
+   }
+
+   function init() {
+      log = document.getElementById("log");
+      img = document.getElementById("original");
+      canvasTarget = document.getElementById("target");
+      canvasDelta = document.getElementById("delta");
+      var bits = document.getElementById("bits");
+      bitmask = document.getElementById("bitmask");
+      bitmask.value = "";
+      equalize = document.getElementById("equalize");
+      equalize.checked = true;
+
+      histogram1 = document.getElementById("histogram1");
+      histogram1.height = 0;
+      histogram1.width = 0;
+
+      for(var i = 7; i >= 0; i--) {
+         var bitCheck = document.createElement("input");
+         var tag = document.createElement("span");
+         tag.innerHTML = i;
+
+         bitCheck.type = "checkbox";
+         bitCheck.value = i;
+         bitCheck.name = "bitcheck";
+         bitCheck.checked = (i == 7); // set the MSB on by default
+         bitCheck.onchange = recalcBitmask;
+
+         bits.appendChild(tag);
+         bits.appendChild(bitCheck);
+      }
+
+      bitlayers = document.getElementsByName("bitcheck");
+
+      img.onload = imageLoaded;
+      canvasTarget.height = canvasDelta.height = img.height;
+      canvasTarget.width = canvasDelta.width = img.width;
+
+      log.style.width = img.width + "px";
+      log.style.height = "auto";
+   }
+
+   function checkAllBits() {
+      for(var i = 0; i < bitlayers.length; i++) {
+         bitlayers[i].checked = true;
+      }
+      recalcBitmask();
+   }
+
+   function resetBits() {
+      for(var i = 0; i < bitlayers.length; i++) {
+         bitlayers[i].checked = false;
+      }
+      bitlayers[0].checked = true;
+      recalcBitmask();
+   }
+
+   function equalizePixel(x) {
+      var y = x & mask;
+      alpha = mask;
+      if(equalize.checked) {
+         y = Math.round(255.0 * y / mask);
+         alpha = 255;
+      }
+      return(y);
+   }
+
+   function recalcBitmask() {
+      mask = 0;
+      for(var i = 0; i < bitlayers.length; i++) {
+         if(bitlayers[i].checked) {
+            mask = mask | (1 << bitlayers[i].value);
+         }
+      }
+      bitmask.value = mask;
+      loadCanvas();
+   }
+
+   function setBitmaskCheckboxes() {
+      for(var i = 0; i < bitlayers.length; i++) {
+         var bit = mask & (1 << i);
+         bitlayers[7 - i].checked = (bit == 0 ? false : true); // ugly hack
+      }
+      recalcBitmask();
+   }
+
+   function shiftLeft() {
+      mask = mask << 1;
+      if(mask > 255) {
+         mask = 255;
+      }
+      bitmask.value = mask;
+      setBitmaskCheckboxes();
+   }
+
+   function shiftRight() {
+      mask = mask >> 1;
+      if(mask < 1) {
+         mask = 1;
+      }
+      bitmask.value = mask;
+      setBitmaskCheckboxes();
+   }
+
+   function loadImage() {
+      var imageFile = document.getElementById("imageFile").value;
+      var extension = imageFile.toUpperCase().match(/\.([^\.]*)$/);
+      if(extension && extension.length == 2) {
+         fileType = extension[1];
+      }
+      if(fileType == "JPG" || fileType == "PNG") {
+         clog("Image type: " + fileType);
+      }
+      else {
+         clog("Unknown image type");
+      }
+      img.src = imageFile + "?" + Math.random().toString();
+   }
+
+   function imageLoaded() {
+      imageHeight = img.height;
+      imageWidth = img.width;
+
+      log.style.width = img.width + "px";
+
+      var resolution = document.getElementById("resolution")
+      resolution.value = imageWidth + "x" + imageHeight;
+      recalcBitmask();
+      loadCanvas();
+   }
+
+   function setPixel(pixData, i, r, g, b, a) {
+      pixData[i] = r;
+      pixData[i + 1] = g;
+      pixData[i + 2] = b;
+      pixData[i + 3] = a; // alpha channel
+   }
+
+   function loadCanvas() {
+      encodingChannel = readEncodingChannel();
+
+      canvasTarget.width = imageWidth;
+      canvasTarget.height = imageHeight;
+      contextTarget = canvasTarget.getContext('2d');
+      
+      // draw the image onto the canvas
+      contextTarget.drawImage(img, 0, 0);
+
+      var targetImage = contextTarget.getImageData(0, 0, canvasTarget.width, canvasTarget.height);
+      targetPix = targetImage.data;
+
+      // create the delta canvas
+      // filter out a specific bit position and plot
+      // the bit values on the delta canvas
+
+      canvasDelta.width = imageWidth;
+      canvasDelta.height = imageHeight;
+      contextDelta = canvasDelta.getContext('2d');
+
+      var deltaImage = contextDelta.getImageData(0, 0, canvasDelta.width, canvasDelta.height);
+      var deltaPix = deltaImage.data;
+
+      for(var i = 0; i < targetPix.length; i += 4) {
+         var tr = targetPix[i];
+         var tg = targetPix[i + 1];
+         var tb = targetPix[i + 2];
+
+         switch(encodingChannel) {
+            case 0: // red
+               setPixel(deltaPix, i, equalizePixel(tr), 0, 0, alpha);
+               setPixel(targetPix, i, tr, 0, 0, 255);
+               break;
+            case 1: // green
+               setPixel(deltaPix, i, 0, equalizePixel(tg), 0, alpha);
+               setPixel(targetPix, i, 0, tg, 0, 255);
+               break;
+            case 2: // blue
+               setPixel(deltaPix, i, 0, 0, equalizePixel(tb), alpha);
+               setPixel(targetPix, i, 0, 0, tb, 255);
+               break;
+            default:
+               setPixel(deltaPix, i, equalizePixel(tr), equalizePixel(tg), equalizePixel(tb), alpha);
+         }
+      }
+      contextTarget.putImageData(targetImage, 0, 0);
+      contextDelta.putImageData(deltaImage, 0, 0);
+      drawHistogram(canvasTarget, histogram1);
+   }
+
+   function writeLog() {
+      log.value = logData.join("\n");
+   }
+
+   function readEncodingChannel() {
+      var v;
+      var channels = document.getElementsByName("channels");
+      for(var i = 0; i < channels.length; i++) {
+         if(channels[i].checked) {
+            v = channels[i].value;
+            break;
+         }
+      }
+      switch(v) {
+         case "R":
+            return(0);
+         case "G":
+            return(1);
+         case "B":
+            return(2);
+         default:
+            return(3);
+      }
+   }
+</script>
+</head>
+
+<body onload="init()">
+   <h1>Image Layer Analysis</h1>
+   <div id="output"></div>
+   <br />
+   <div>
+      Input file: <input type="text" id="imageFile" size=60 value="">
+      <input type="button" value="load" onclick="loadImage()">
+   </div>
+   <br />
+   <div>
+      <table border=0>
+         <tr>
+            <td><img id="original" src="stegosploit_logo_small.jpg"></td>
+            <td>
+               <canvas id="histogram1"></canvas>
+            </td>
+         </tr>
+      </table>
+      <br />
+      Bit Mask: <input type="text" size="3" readonly=true id="bitmask">
+      <span id="bits"></span>
+      <input type="button" value="&lt;" onclick="shiftLeft()">
+      <input type="button" value="&gt;" onclick="shiftRight()">
+      <input type="button" value="Check all" onclick="checkAllBits()">
+      <input type="button" value="Reset" onclick="resetBits()">
+      Equalize: <input type="checkbox" id="equalize" onchange="loadCanvas()">
+      <br />
+      <br />
+      Resolution:
+      <input type="text" size="20" readonly=true id="resolution" value="">
+      <input type="radio" name="channels" value="R" onclick="loadCanvas()">R
+      <input type="radio" name="channels" value="G" onclick="loadCanvas()">G
+      <input type="radio" name="channels" value="B" onclick="loadCanvas()">B
+      <input type="radio" name="channels" value="3" onclick="loadCanvas()" checked>All
+   </div>
+   <div>
+      <table border=0>
+         <tr>
+            <td><canvas id="target"></canvas></td>
+            <td><canvas id="delta"></canvas></td>
+         </tr>
+         <tr>
+            <td>LOG<br /><textarea id="log" rows=10></textarea></td>
+         </tr>
+      </table>
+      <br />
+   </div>
+</body>
+</html>

