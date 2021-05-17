@@ -1,4 +1,11 @@
 # PyStegosploit - Exploit Delivery via Steganography and Polyglots
+by Charmve - yidazhang1 [at] gmail[dot]com, [@Charmve](https://github.com/Charmve)  [@therealsaumil](https://twitter.com/therealsaumil) [@therealsaumil](https://twitter.com/therealsaumil) [@amichael](https://github.com/amichael7)
+
+May 2021
+
+![stego_imajs.png](stego/static/img/stego_imajs.png)
+
+Stegosploit creates a new way to encode "drive-by" browser exploits and deliver them through image files. These payloads are undetectable using current means. This paper discusses two broad underlying techniques used for image based exploit delivery - Steganography and Polyglots. Drive-by browser exploits are steganographically encoded into JPG and PNG images. The resultant image file is fused with HTML and Javascript decoder code, turning it into an HTML+Image polyglot. The polyglot looks and feels like an image, but is decoded and triggered in a victim's browser when loaded.
 
 
 ## A Tour of the Stegosploit Toolkit <sup>[1]</sup>
@@ -38,8 +45,8 @@
   - 📁 <code>exploits</code> - decoder.html
   - 📁 <code>images</code> - encoded and original images
   - 📁 <code>polyglots</code> - lena_poly_demo.html
-  - 📁 <code>scripts</code> - python scripts ``polyglot_with_jpg.py``
-  - 📁 <code>tmp</code> run ``--/tools/msf4$ ./msfconsole -r ./tmp/load_meterpreter.rc``
+  - 📁 <code>scripts</code> - Creates an HTML+PNG polyglot ``polyglot_with_jpg.py`` 
+  - 📁 <code>tmp</code> run ``--/tools/msf4$ ./msfconsole -r ./tmp/load_meterpreter.rc`` [<i><u>video show 2</u></i>](https://www.youtube.com/watch?v=fAyuOhB4uvo)
   - 📄 <code>README.md</code> - Show how to use this project-stegosploit
 
 <p><code>jpegdump.c</code> is written by Ralph Giles and can be downloaded from <a href="https://svn.xiph.org/experimental/giles/jpegdump.c">https://svn.xiph.org/experimental/giles/jpegdump.c</a></p>
@@ -55,8 +62,10 @@ The exploit that we will use is an Internet Explorer Use-after-free exploit ([CV
 ## 🔨 Requirements
 
 - Ubuntu 18.04 / Kali / Debian 9
-- web service - ``python -m http.server 8000``
-- Metasploit Framework - 
+- web service  - ``python -m http.server 8000``
+- Metasploit Framework  - [How to Install](https://computingforgeeks.com/how-to-install-metasploit-framework-on-ubuntu-18-04-debian-9/)
+
+![msfconsole.png](stego/static/img/msfconsole.png)
 
 ## 📆 What we have done so far
 
