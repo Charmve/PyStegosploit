@@ -90,7 +90,7 @@ __Highlights:__
 
 My repo 
 
-- [xss-test](https://github.com/Charmve/xss-test) - Hide secret messages with JavaScript with steganography.js
+- [steganography.js](https://github.com/Charmve/xss-test) - Hide secret messages with JavaScript with steganography.js https://charmve.github.io/xss-test/examples/showcase/
 - [StegaStamp-plus](https://github.com/Charmve/StegaStamp-plus) - Improved the original repo, 'Invisible Hyperlinks in Physical Photographs', without datasets and training parameters
 
 ## ❕ Disclaimer
@@ -106,13 +106,21 @@ My repo
 ## 📎 References
 
 [1] https://stegosploit.info/ 
+
 [2] https://conference.hitb.org/hitbsecconf2015ams/sessions/stegosploit-hacking-with-pictures/
+
 [3] https://www.vulnerability-db.com/?q=articles/2015/06/17/exploit-delivery-steganography-using-stegosploit-tool-v02
+
 [4] https://www.blackhat.com/docs/eu-15/materials/eu-15-Shah-Stegosploit-Exploit-Delivery-With-Steganography-And-Polyglots.pdf
+
 [5] https://stackoverflow.com/questions/4110964/how-does-heap-spray-attack-work
+
 [6] https://www.youtube.com/watch?time_continue=1&v=6lYUtIZHlJA
+
 [7] https://www.owasp.org/images/0/01/OWASL_IL_2010_Jan_-_Moshe_Ben_Abu_-_Advanced_Heapspray.pdf
+
 [8] https://en.wikipedia.org/wiki/Heap_spraying
+
 [9] https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/
 
 ## ✉️ Contact
