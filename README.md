@@ -37,16 +37,16 @@ Stegosploit creates a new way to encode "drive-by" browser exploits and deliver 
   - 📄 <code>CRC32.pm</code>
   - 📄 <code>PNGDATA.pm</code>
 - ★ 📁 <code>project-stegosploit/</code> - Core Part [<i><u>video show 1</u></i>](https://www.youtube.com/watch?v=O9vSSQIZPlI) | [<i><u>text show 1</u></i>](https://stegosploit.info/#22-steganographically-encoding-the-exploit-code)
-  - 📁 <code>encoding</code> - core 
+  - 📁 <code>encoding/</code> - core 
     - 📄 <code>iterative_encoding.html</code> - Steganographically Encoding the Exploit Code
     - 📄 <code>image_layer_analysis.html</code>
     - 📄 <code>imagedevoder.html</code>
     - 📄 <code>decode_and_run_cinput_withjs.html</code>
-  - 📁 <code>exploits</code> - decoder.html
-  - 📁 <code>images</code> - encoded and original images
-  - 📁 <code>polyglots</code> - lena_poly_demo.html
-  - 📁 <code>scripts</code> - Creates an HTML+PNG polyglot ``polyglot_with_jpg.py`` 
-  - 📁 <code>tmp</code> run ``--/tools/msf4$ ./msfconsole -r ./tmp/load_meterpreter.rc`` [<i><u>video show 2</u></i>](https://www.youtube.com/watch?v=fAyuOhB4uvo)
+  - 📁 <code>exploits/</code> - decoder.html
+  - 📁 <code>images/</code> - encoded and original images
+  - 📁 <code>polyglots/</code> - lena_poly_demo.html
+  - 📁 <code>scripts/</code> - Creates an HTML+PNG polyglot ``polyglot_with_jpg.py`` 
+  - 📁 <code>tmp/</code> run ``--/tools/msf4$ ./msfconsole -r ./tmp/load_meterpreter.rc`` [<i><u>video show 2</u></i>](https://www.youtube.com/watch?v=fAyuOhB4uvo)
   - 📄 <code>README.md</code> - Show how to use this project-stegosploit
 
 <p><code>jpegdump.c</code> is written by Ralph Giles and can be downloaded from <a href="https://svn.xiph.org/experimental/giles/jpegdump.c">https://svn.xiph.org/experimental/giles/jpegdump.c</a></p>
@@ -94,15 +94,13 @@ My repo
 - [StegaStamp-plus](https://github.com/Charmve/StegaStamp-plus) - Improved the original repo, 'Invisible Hyperlinks in Physical Photographs', without datasets and training parameters
 
 ## ❕ Disclaimer
-This repo follows the GPL open source agreement, please be sure to understand.
+- This repo follows the GPL open source agreement, please be sure to understand.
 
-The original intention of this repo is to facilitate security researchers to study Bluetooth Low Energy / Bluetooth Smart and use it in education and learning to improve IoT security protection.
+- We strictly prohibit all acts that violate any national laws through this program, please use this program within the legal scope.
 
-We strictly prohibit all acts that violate any national laws through this program, please use this program within the legal scope.
+- By default, using this item will be deemed as your agreement to our rules. Please be sure to abide by the moral and legal standards.
 
-By default, using this item will be deemed as your agreement to our rules. Please be sure to abide by the moral and legal standards.
-
-If you do not comply, you will be responsible for the consequences, and the author will not bear any responsibility!
+- If you do not comply, you will be responsible for the consequences, and the author will not bear any responsibility!
 
 
 ## 📎 References
