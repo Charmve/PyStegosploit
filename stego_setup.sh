@@ -17,13 +17,13 @@ else
 fi
 
 echo "Getting the Stegosploit demo kit"
-git clone https://github.com/amichael7/python-stegosploit.git
+git clone https://github.com/Charmve/PyStegosploit.git
 
 if [ $? == 0 ]; then
 	echo "Successfully cloned the git repo"
 else
 	echo "Could not clone the git repo, do so manually from:"
-	echo "https://github.com/amichael7/python-stegosploit"
+	echo "https://github.com/Charmve/PyStegosploit"
 fi
 
 echo "Getting image to use"
