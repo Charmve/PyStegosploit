@@ -1,4 +1,7 @@
 # PyStegosploit - Exploit Delivery via Steganography and Polyglots
+
+[[video1](https://www.youtube.com/watch?v=O9vSSQIZPlI)] | [[video2](https://www.youtube.com/watch?v=fAyuOhB4uvo)] | [[page](https://stegosploit.info/#22-steganographically-encoding-the-exploit-code)]
+
 by Charmve - yidazhang1 [at] gmail[dot]com, [@Charmve](https://github.com/Charmve)  [@therealsaumil](https://twitter.com/therealsaumil)  [@amichael](https://github.com/amichael7)
 
 May 2021
@@ -122,6 +125,10 @@ My repo
 [8] https://en.wikipedia.org/wiki/Heap_spraying
 
 [9] https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/
+
+## 🎧 Related job
+
+[video](https://www.youtube.com/watch?v=6lYUtIZHlJA&t=281s)
 
 ## ✉️ Contact
 
